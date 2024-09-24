@@ -1,5 +1,5 @@
 # Chess
-Chess Simulator based on JFrame
+Chess Simulator and Bot based on JFrame
 
 This main branch lists all the stable verisons created during production process
 1) Working on terminal
