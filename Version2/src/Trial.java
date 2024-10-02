@@ -10,6 +10,9 @@ public class Trial {
     public static JButton button = new JButton("Click me for options");
 
     public static void main(String[] args) {
+
+        System.out.println("Trying my best 😔😔😔");
+
         frame.setLayout(new BorderLayout());
         frame.setSize(400, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
