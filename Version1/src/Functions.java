@@ -113,8 +113,14 @@ public class Functions {
             System.out.println("Move your Piece");
             return false;
         }
-        else if (B.COLOUR == A.COLOUR) return false;
-        else if (!A.moveTo(board, startRow, startCol,endRow, endCol)) return false;
+        else if (B.COLOUR == A.COLOUR){
+            System.out.println("You can't capture your own Piece");
+            return false;
+        }
+        else if (!A.moveTo(board, startRow, startCol,endRow, endCol)) {
+            System.out.println("Can't move there");
+            return false;
+        }
 
         if(A.NAME == 'P' && Pawn.pawnPromotionFlag && Main.IS_REAL_MOVE) {
             if(!pawnPromotion(board, startRow, startCol, endRow, endCol)) return false;
