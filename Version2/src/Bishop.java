@@ -1,6 +1,5 @@
 package Version2.src;
 
-
 class Bishop extends Piece{
 
     Bishop(char name, int points, char colour) {

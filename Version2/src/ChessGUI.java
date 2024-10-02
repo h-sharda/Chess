@@ -33,12 +33,8 @@ public class ChessGUI {
 
     // VARIABLES USED FOR MAKING MOVES
     static char CURRENT_PLAYER = 'W';
-    static int START_ROW;
-    static int START_COL;
-    static int END_ROW;
-    static int END_COL;
-    static boolean IS_REAL_MOVE = false;
-    static boolean MOVE_SELECTOR = true;
+    static int START_ROW, START_COL, END_ROW, END_COL;
+    static boolean IS_REAL_MOVE = false, MOVE_SELECTOR = true;
     // (true selects the starting square, false selects the ending square)
 
     public static void main(String[] args) {
@@ -154,7 +150,7 @@ public class ChessGUI {
             if (EndConditions.checkMate(ACTUAL_BOARD, CURRENT_PLAYER, BOARD_HISTORY)){
                 char winner = CURRENT_PLAYER=='W' ? 'B' : 'W';
                 JOptionPane.showMessageDialog(FRAME, winner +" WON THE GAME");
-            } else if (EndConditions.staleMate(ACTUAL_BOARD, CURRENT_PLAYER)){
+            } else if (EndConditions.staleMate()){
                 JOptionPane.showMessageDialog(FRAME, "GAME IS DRAW");
             }
 
