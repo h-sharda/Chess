@@ -1,4 +1,4 @@
-# Chess
+# Chess Simulator
 Chess Simulator and Bot based on JFrame
 
 This Project was made on IntelliJ IDEA using jdk 17
