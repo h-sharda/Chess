@@ -132,12 +132,7 @@ public class Functions {
         boardSafetyUpdate(board);
 
         if(isKingUnsafe(board, player)){
-            Piece[][] lastState = st.peek();
-            for (int i = 0; i < 8; i++) {
-                System.arraycopy(lastState[i], 0, board[i], 0, 8);
-            }
-            boardSafetyReset(board);
-            boardSafetyUpdate(board);
+            undo (board, st);
             return false;
         }
 

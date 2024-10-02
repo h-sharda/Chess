@@ -16,15 +16,7 @@ public abstract class Piece {
     }
 
     public String getName(){
-
-        if (NAME == 'K') return ""+ '♚';
-        if (NAME == 'Q') return ""+ '♛';
-        if (NAME == 'R') return ""+ '♜';
-        if (NAME == 'N') return ""+ '♞';
-        if (NAME == 'B') return ""+ '♝';
-        if (NAME == 'P') return ""+ '♟';
-
-        return " ";
+        return ""+ COLOUR + NAME;
     }
 
     public abstract boolean moveTo( Piece[][] board, int startRow, int startCol, int endRow, int endCol);

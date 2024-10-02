@@ -67,7 +67,7 @@ public class Main {
     }
 
     public static void displayBoard (Piece [][] board){
-        System.out.println("  --------------------------------------");
+        System.out.println("  -----------------------------------------");
         for (int i =0 ; i< 8; i++){
             for (int j=0; j< 8; j++){
                 if (j==0) System.out.print( (8-i) + " | ");
@@ -77,15 +77,20 @@ public class Main {
             }
 
             System.out.println();
-            System.out.println("  --------------------------------------");
+            System.out.println("  -----------------------------------------");
         }
         System.out.println("   a    b    c    d    e    f    g    h");
     }
 
 
     public static boolean isMoveValid(String s1, String s2){
-        boolean ans = true;
 
+        if (s1.length() != 2 || s2.length() != 2) {
+            System.out.println("Invalid input, please enter a valid move (e.g., e2 e4).");
+            return false;
+        }
+
+        boolean ans = true;
         int a = (s1.charAt(0) - 'a');
         int b = (s1.charAt(1) - '1');
         int c = (s2.charAt(0) - 'a');
