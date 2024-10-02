@@ -1,5 +1,6 @@
 # Chess
 Chess Simulator and Bot based on JFrame
+
 This Project was made on IntelliJ IDEA using jdk 17
 
 This main branch lists all the stable verisons created during production process
