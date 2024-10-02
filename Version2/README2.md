@@ -3,7 +3,7 @@ This is the 2nd version implementing chess GUI using JFrame
 
 ##### Main runner program is ChessGUI.java
 
-Program currently uses UNICODE to represent Pieces, so make sure your IDE supports UNICODE characters before running the program.
+Program currently uses chess symbols from UNICODE to represent Pieces, so make sure your IDE supports UNICODE characters before running the program.
 
 ### Updates
 - Implemented GUI based code eliminating the need of terminal
