@@ -129,7 +129,7 @@ public class Functions {
         }
 
         // TAKING ACCOUNT FOR SPECIAL MOVES
-        if(A.NAME == 'P' && Pawn.pawnPromotionFlag && Main.IS_REAL_MOVE) {
+        if(A.NAME == 'P' && Pawn.pawnPromotionFlag ) {
             if(!pawnPromotion(board, startRow, startCol, endRow, endCol)) return false;
         } else if (A.NAME == 'P' && Pawn.enPassantFlag){
             enPassant(board, startRow, startCol, endRow, endCol);
@@ -169,12 +169,10 @@ public class Functions {
         }
     }
     public static boolean pawnPromotion(Piece [][] board, int startRow, int startCol, int endRow, int endCol){
-        int choice = Main.handlePromotion();
+        int choice = -1;
+        if (Main.IS_REAL_MOVE) choice = Main.handlePromotion();
         char player = board[startRow][startCol].COLOUR;
         switch (choice){
-            case 1:
-                board[endRow][endCol] = new Queen('Q', 9, player);
-                break;
             case 2:
                 board[endRow][endCol] = new Knight('N', 3, player);
                 break;
@@ -184,8 +182,9 @@ public class Functions {
             case 4:
                 board[endRow][endCol] = new Bishop('B', 3, player);
                 break;
-            default:
-                return false;
+            default: // SELECTING THE QUEEN AND THE CASE OF NO INPUT
+                board[endRow][endCol] = new Queen('Q', 9, player);
+                break;
         }
         board[startRow][startCol] = new Empty(' ', 0, ' ');
         return true;
