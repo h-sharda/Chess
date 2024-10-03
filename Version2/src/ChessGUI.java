@@ -133,9 +133,7 @@ public class ChessGUI {
         END_COL = col;
 
         IS_REAL_MOVE = true;
-
         boolean moved = Functions.makeMove(ACTUAL_BOARD, START_ROW, START_COL, END_ROW, END_COL, CURRENT_PLAYER, BOARD_HISTORY);
-
         IS_REAL_MOVE = false;
 
         updateDisplayBoard();

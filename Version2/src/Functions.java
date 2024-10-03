@@ -30,10 +30,11 @@ public class Functions {
                 board[i][j] = new Empty(' ', 0,' ');
             }
         }
-
+        // PUSHING THE INITIAL STATE TO THE STACK
         st.push(makeBoardCopy(board));
     }
 
+    // TO RESET ALL SQUARE AS SAFE, TO PREVENT CARRY ON PREVIOUS THREATS
     public static void boardSafetyReset(Piece[][] board){
         for (int i=0; i< 8; i++){
             for (int j =0; j< 8; j++){
@@ -43,6 +44,7 @@ public class Functions {
         }
     }
 
+    // CHECKS WHICH SQUARE IS SAFE FOR WHICH COLOUR
     public static void boardSafetyUpdate(Piece[][] board){
         for(int i =0; i< 8; i++){
             for (int j=0; j<8; j++){
@@ -61,6 +63,7 @@ public class Functions {
         }
     }
 
+    // CHECKS IF THE KING OF A PLAYER IS SAFE
     public static boolean isKingUnsafe(Piece[][] board, char player){
         for (int i =0; i< 8; i++){
             for (int j =0; j< 8 ; j++){
@@ -74,7 +77,7 @@ public class Functions {
         return true;
     }
 
-
+    // MAKES A DEEP COPY OF A PIECE
     public static Piece makePieceCopy(Piece A){
 
         Piece copy;
@@ -94,6 +97,7 @@ public class Functions {
         return copy;
     }
 
+    // MAKES A DEEP COPY OF THE BOARD
     public static Piece[][] makeBoardCopy(Piece[][] board){
         Piece[][] copy = new Piece[8][8];
         for (int i =0; i< 8; i++){
@@ -104,22 +108,26 @@ public class Functions {
         return copy;
     }
 
+    // MOVE MAKING FUNCTION, HEART OF THE LOGIC
     public static boolean makeMove(Piece[][] board, int startRow, int startCol, int endRow, int endCol, char player, Stack<Piece[][]> st){
 
         Piece A = board[startRow][startCol];
         Piece B = board[endRow][endCol];
 
+        // CHECKS VARIOUS CONDITIONS BEFORE MAKING THE MOVE
         if (A.COLOUR != player) return false;
-        else if (B.COLOUR == A.COLOUR) return false;
+        else if (B.COLOUR == A.COLOUR)return false;
         else if (!A.moveTo(board, startRow, startCol,endRow, endCol)) return false;
 
-        if(A.NAME == 'P' && Pawn.pawnPromotionFlag && ChessGUI.IS_REAL_MOVE) {
+        // TAKING ACCOUNT FOR SPECIAL MOVES
+        if(A.NAME == 'P' && Pawn.pawnPromotionFlag) {
             if(!pawnPromotion(board, startRow, startCol, endRow, endCol)) return false;
         } else if (A.NAME == 'P' && Pawn.enPassantFlag){
             enPassant(board, startRow, startCol, endRow, endCol);
         } else if (A.NAME =='K' && King.castlingFlag){
             castling(board, startRow, startCol, endRow, endCol);
         } else {
+            // MOVING NORMALLY
             A.NO_OF_MOVES++;
             board[endRow][endCol] = A;
             board[startRow][startCol] = new Empty(' ', 0, ' ');
@@ -127,18 +135,17 @@ public class Functions {
 
         boardSafetyReset(board);
         boardSafetyUpdate(board);
+        st.push(makeBoardCopy(board));
 
+        // REVERTING TO PREVIOUS BOARD STATE IF THE KING IS UNSAFE
         if(isKingUnsafe(board, player)){
-            undo(board, st);
+            undo (board, st);
             return false;
         }
-
-        st.push(makeBoardCopy(board));
         return true;
     }
-
+    // SPECIAL MOVES
     public static void castling(Piece [][] board, int startRow, int startCol, int endRow, int endCol){
-
         board[endRow][endCol] = board[startRow][startCol];
         board[endRow][endCol].NO_OF_MOVES++;
         board[startRow][startCol] = new Empty(' ', 0, ' ');
@@ -150,18 +157,12 @@ public class Functions {
             board[endRow][3] = board[endRow][0];
             board[endRow][0] = new Empty(' ', 0, ' ');
         }
-
     }
-
     public static boolean pawnPromotion(Piece [][] board, int startRow, int startCol, int endRow, int endCol){
-
-        int choice = ChessGUI.handlePromotion();
+        int choice = -1;
+        if (ChessGUI.IS_REAL_MOVE) choice = ChessGUI.handlePromotion();
         char player = board[startRow][startCol].COLOUR;
-
         switch (choice){
-            case 0:
-                board[endRow][endCol] = new Queen('Q', 9, player);
-                break;
             case 1:
                 board[endRow][endCol] = new Knight('N', 3, player);
                 break;
@@ -171,38 +172,32 @@ public class Functions {
             case 3:
                 board[endRow][endCol] = new Bishop('B', 3, player);
                 break;
-            default:
-                return false;
+            default: // SELECTING THE QUEEN AND NO INPUT
+                board[endRow][endCol] = new Queen('Q', 9, player);
+                break;
         }
-
         board[startRow][startCol] = new Empty(' ', 0, ' ');
         return true;
     }
-
     public static void enPassant(Piece [][] board, int startRow, int startCol, int endRow, int endCol){
-
         board[endRow][endCol] = board[startRow][startCol];
         board[endRow][endCol].NO_OF_MOVES++;
         board[startRow][startCol] = new Empty(' ', 0, ' ');
-
         board[startRow][endCol] = new Empty(' ', 0, ' ');
-
     }
 
+    // CALCULATES TOTAL NUMBER OF LEGAL MOVES TO BE USED FOR VARIOUS PURPOSES
     public static int totalLegalMoves(Piece[][] board, char player, Stack<Piece[][]> st){
-
         int moves = 0;
         for(int i =0; i< 8; i++){
             for (int j=0; j<8; j++){
-                if (moves >= 1) break;
-                Piece A = board[i][j];
-                if (player != A.COLOUR) continue;
+                if (player != board[i][j].COLOUR) continue;
                 for (int k =0; k< 8; k++){
                     for (int l =0; l < 8; l++){
-                        if (moves >= 1) break;
                         if (makeMove(board,i,j,k,l,player,st)){
                             moves++;
                             undo(board, st);
+                            return moves;
                         }
                     }
                 }
@@ -211,26 +206,24 @@ public class Functions {
         return moves;
     }
 
+    // UNDOES THE PREVIOUS AND REVERTS THE BOARD TO PREVIOUS STATE
     public static void undo(Piece[][] board, Stack<Piece[][]> st) {
         if (st.size() <= 1) return;
-
         st.pop();
         Piece[][] lastState = st.peek();
-
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 board[i][j] = makePieceCopy(lastState[i][j]);
             }
         }
-
     }
 
+    // RESETS THE BOARD TO INITIAL STAGE
     public static void reset (Piece[][] board, Stack<Piece[][]> st){
         System.out.println("Resetting the board");
         Piece[][] newBoard = new Piece[8][8];
         st.clear();
         initializeBoard(newBoard, st);
-
         for (int i=0; i< 8; i++){
             System.arraycopy(newBoard[i], 0, board[i], 0, 8);
         }
