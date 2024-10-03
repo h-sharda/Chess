@@ -146,10 +146,10 @@ public class ChessGUI {
             if (Pawn.pawnPromotionFlag) handlePromotion();
 
             if (EndConditions.checkMate(ACTUAL_BOARD, CURRENT_PLAYER, BOARD_HISTORY)){
-                char winner = CURRENT_PLAYER=='W' ? 'B' : 'W';
+                String winner = CURRENT_PLAYER=='W' ? "BLACK" : "WHITE";
                 JOptionPane.showMessageDialog(FRAME, winner +" WON THE GAME");
             } else if (EndConditions.staleMate()){
-                JOptionPane.showMessageDialog(FRAME, "GAME IS DRAW");
+                JOptionPane.showMessageDialog(FRAME, "GAME IS DRAW BY STALEMATE");
             }
 
         } else {
