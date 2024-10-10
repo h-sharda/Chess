@@ -5,7 +5,7 @@ Chess Simulator and Bot based on Java Swing using JFrame.
 This Project was built on JDK 17, but it is compatible with all other versions as well.
 
 ### How to Run
-To run the game:
+To run the latest version of the game:
 1) Download "Chess.jar"
 2) Open the file (ensure you have an appropriate JDK/JRE installed).
 ###### *Although the project was developed with JDK 17, it should work with other versions as well.*
