@@ -16,7 +16,7 @@ To run the latest version of the game:
 - Version 2: Working GUI using JFrame
 - Version 3: Adding new features like time control, Draw by agreement, Resign, PGN generator, making it a fully functional 2 player chess game
 - Version 4 *(under development)*: Adding a Single Player feature with a chess Bot based on Backtracking and minimax, also linking the bot with a database for chess books
-- Version 5 *(Planned)*: Improving the Bot using reinforcement learning
+- Version 5 *(planned)*: Improving the Bot using reinforcement learning
 
 ###### Please read the individual README files for the specific version for further details
 
