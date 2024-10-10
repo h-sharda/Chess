@@ -302,7 +302,9 @@ public class ChessGUI {
             int row = i;
             if (currentPlayer == 'W') row = BOARD_SIZE-i-1;
             for (int j = 0; j < BOARD_SIZE; j++) {
-                boardPanel.add(displayBoard[row][j]);
+                int col = j;
+                if (currentPlayer == 'B') col = BOARD_SIZE-j-1;
+                boardPanel.add(displayBoard[row][col]);
             }
         }
         boardPanel.revalidate();

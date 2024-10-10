@@ -76,7 +76,7 @@ public class MenuGUI {
         menuFrame.add(lblInputPlayer1Name, gbc);
 
         gbc.gridx = 1;
-        txtInputPlayer1Name.setText("Harshit");
+        txtInputPlayer1Name.setText("Player 1");
         txtInputPlayer1Name.setFont(DEFAULT_FONT);
         txtInputPlayer1Name.setToolTipText("Name <= 20 characters");
         menuFrame.add(txtInputPlayer1Name, gbc);
@@ -94,7 +94,7 @@ public class MenuGUI {
         menuFrame.add(lblInputPlayer2Name, gbc);
 
         gbc.gridx = 1;
-        txtInputPlayer2Name.setText("Opponent");
+        txtInputPlayer2Name.setText("Player 2");
         txtInputPlayer2Name.setFont(DEFAULT_FONT);
         txtInputPlayer2Name.setToolTipText("Name <= 20 characters");
         menuFrame.add(txtInputPlayer2Name, gbc);
@@ -125,7 +125,7 @@ public class MenuGUI {
         menuFrame.add(lblInputTimeIncrement, gbc);
 
         gbc.gridx = 1;
-        txtInputTimeIncrement.setText("5");
+        txtInputTimeIncrement.setText("0");
         txtInputTimeIncrement.setFont(DEFAULT_FONT);
         txtInputTimeIncrement.setToolTipText("Increment should be a integer, 0 <= increment <= 99");
         menuFrame.add(txtInputTimeIncrement, gbc);
