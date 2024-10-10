@@ -15,3 +15,5 @@ This is the 3rd version adding various new features to the game
     - Improved comments
     - Changed variable names to follow standard naming conventions
     - Improved Structuring of the code
+
+###### *Currently, the menu has the option to choose Player type between human and computer but irrespective of the choice both player will be human only*
