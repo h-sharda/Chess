@@ -1,7 +1,6 @@
 package Version3.src;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Stack;
 
@@ -104,17 +103,17 @@ public class ChessGUI {
 
         player1Panel.setBorder(BorderFactory.createTitledBorder("White"));
         lblPlayer1Name.setFont(PLAYER_FONT);
-        lblPlayer1Name.setBorder(new EmptyBorder(0,80,0,0));
+        lblPlayer1Name.setBorder(BorderFactory.createEmptyBorder(0,80,0,0));
         player1Panel.add(lblPlayer1Name, "West");
-        lblPlayer1Time.setBorder(new EmptyBorder(0,0,0,120));
+        lblPlayer1Time.setBorder(BorderFactory.createEmptyBorder(0,0,0,120));
         lblPlayer1Time.setFont(PLAYER_FONT);
         player1Panel.add(lblPlayer1Time,"East");
 
         player2Panel.setBorder(BorderFactory.createTitledBorder("Black"));
         lblPlayer2Name.setFont(PLAYER_FONT);
-        lblPlayer2Name.setBorder(new EmptyBorder(0,80,0,0));
+        lblPlayer2Name.setBorder(BorderFactory.createEmptyBorder(0,80,0,0));
         player2Panel.add(lblPlayer2Name, "West");
-        lblPlayer2Time.setBorder(new EmptyBorder(0,0,0,120));
+        lblPlayer2Time.setBorder(BorderFactory.createEmptyBorder(0,0,0, 120));
         lblPlayer2Time.setFont(PLAYER_FONT);
         player2Panel.add(lblPlayer2Time, "East");
 
@@ -126,7 +125,7 @@ public class ChessGUI {
         gameFrame.add(lblEvaluation, "West");
         gameFrame.add (controlPanel, "East");
 
-        gameFrame.setSize(960,720);
+        gameFrame.setSize(840,720);
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setLocationRelativeTo(null);
         gameFrame.setVisible(true);
@@ -209,7 +208,7 @@ public class ChessGUI {
             else player2Time += Main.timeIncrement;
 
             currentPlayer = currentPlayer == 'W' ? 'B' : 'W';
-            if(boardFlip) flipBoard();
+            flipBoard();
             updateDisplayBoard();
 
             if (Pawn.pawnPromotionFlag) handlePromotion();
@@ -234,7 +233,7 @@ public class ChessGUI {
         currentPlayer = currentPlayer =='W'?'B':'W';
         clickSelector = true;
         evaluation = Functions.calculateEvaluation(actualBoard);
-        if(boardFlip) flipBoard();
+        flipBoard();
         updateDisplayBoard();
 
     }
@@ -247,7 +246,7 @@ public class ChessGUI {
         evaluation = 0;
         player1Time = Main.time;
         player2Time = Main.time;
-        if(boardFlip) flipBoard();
+        flipBoard();
         updateDisplayBoard();
     }
 
@@ -295,6 +294,9 @@ public class ChessGUI {
     }
 
     public static void flipBoard(){
+
+        if (!boardFlip) return;
+
         boardPanel.removeAll();
         for (int i = 0; i < BOARD_SIZE; i++) {
             int row = i;
@@ -305,6 +307,19 @@ public class ChessGUI {
         }
         boardPanel.revalidate();
         boardPanel.repaint();
+
+        gameFrame.remove(player1Panel);
+        gameFrame.remove(player2Panel);
+
+        if (currentPlayer == 'W'){
+            gameFrame.add(player1Panel, "South");
+            gameFrame.add(player2Panel, "North");
+        } else {
+            gameFrame.add(player1Panel, "North");
+            gameFrame.add(player2Panel, "South");
+        }
+        gameFrame.revalidate();
+        gameFrame.repaint();
     }
 
 }
