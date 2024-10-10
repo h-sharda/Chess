@@ -7,4 +7,4 @@
 - Added all the Chess Rules for a Legal Move
 - Making sure the King is safe after the move is made
 - Reverting the move if the king isn't safe after the move
-- Added the valid Game end conditions (Checkmate and Stalemate)
+- Added Game end conditions like Checkmate and Stalemate
