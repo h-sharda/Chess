@@ -1,7 +1,7 @@
 ## VERSION 2
 This is the 2nd version implementing chess GUI using JFrame
 
-##### To Run this version download "Chess-2.0.jar"
+##### To Run this version download and open "Chess-2.0.jar"
 
 Program currently uses chess symbols from UNICODE to represent Pieces, so make sure your IDE supports UNICODE characters before running the program.
 
