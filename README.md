@@ -14,7 +14,7 @@ To run the latest version of the game:
 ###### This main branch lists all the stable versions created during production process: 
 - Version 1: Working Simulator on the terminal
 - Version 2: Working GUI using JFrame
-- Version 3: Adding new features like time control, Draw by agreement, Resign, PGN generator, making it a fully functional 2 player chess game
+- Version 3: Adding new features like time control, Evaluation bar, Flip board, Player Labels, adding an interactive menu to set time controls. Making it a fully functional 2 player chess game.
 - Version 4: Adding a Single Player feature with a chess Bot based on Backtracking and minimax, also linking the bot with a database for chess books
 - Version 5 *(under development)*: Improving the Bot using reinforcement learning
 
