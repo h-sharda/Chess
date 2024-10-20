@@ -1,32 +1,33 @@
 package Version4.src;
 
-public abstract class Piece {
+abstract class Piece {
 
-    public char NAME;
-    public int POINTS;
-    public char COLOUR;
-    public int NO_OF_MOVES = 0;
-    public boolean IS_SAFE_FOR_WHITE = true;
-    public boolean IS_SAFE_FOR_BLACK = true;
+    char name;
+    int value;
+    char colour;
+    int noOfMoves = 0;
+    boolean isSafeForWhite = true;
+    boolean isSafeForBlack = true;
 
-    public Piece(char name, int points, char colour){
-        NAME = name;
-        POINTS = points;
-        COLOUR = colour;
+    Piece(char name, int value, char colour){
+        this.name = name;
+        this.value = value;
+        this.colour = colour;
     }
 
-    public String getName(){
+    String getName(){
         //♔♕♖♗♘♙ ♚♛♜♝♞♟
-        if (NAME == 'K') return ""+ '♚';
-        if (NAME == 'Q') return ""+ '♛';
-        if (NAME == 'R') return ""+ '♜';
-        if (NAME == 'N') return ""+ '♞';
-        if (NAME == 'B') return ""+ '♝';
-        if (NAME == 'P') return ""+ '♟';
+
+        if (name == 'P') return "♟";
+        else if (name == 'B') return "♝";
+        else if (name == 'N') return "♞";
+        else if (name == 'R') return "♜";
+        else if (name == 'Q') return "♛";
+        else if (name == 'K') return "♚";
 
         return " ";
     }
 
-    public abstract boolean moveTo( Piece[][] board, int startRow, int startCol, int endRow, int endCol);
+    abstract boolean moveTo( Piece[][] board, int startRow, int startCol, int endRow, int endCol);
 
 }

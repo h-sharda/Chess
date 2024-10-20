@@ -2,12 +2,12 @@ package Version4.src;
 
 class Rook extends Piece {
 
-    Rook(char name, int points, char colour) {
-        super(name, points, colour);
+    Rook(char name, int value, char colour) {
+        super(name, value, colour);
     }
 
     @Override
-    public boolean moveTo(Piece[][] board, int startRow, int startCol, int endRow, int endCol) {
+    boolean moveTo(Piece[][] board, int startRow, int startCol, int endRow, int endCol) {
 
         if ( startRow == endRow && startCol == endCol) return false;
 
@@ -15,11 +15,11 @@ class Rook extends Piece {
         if ( endRow == startRow ){
             if (startCol > endCol){
                 for (int i = startCol-1; i > endCol; i--){
-                    if (board[startRow][i].COLOUR != ' ' ) return false;
+                    if (board[startRow][i].colour != ' ' ) return false;
                 }
             } else {
                 for (int i = startCol +1; i < endCol ; i++){
-                    if (board[startRow][i].COLOUR != ' ') return false;
+                    if (board[startRow][i].colour != ' ') return false;
                 }
             }
             return true;
@@ -29,11 +29,11 @@ class Rook extends Piece {
         if ( endCol == startCol){
             if (startRow > endRow){
                 for (int i = startRow-1; i > endRow; i--){
-                    if (board[i][startCol].COLOUR != ' ' ) return false;
+                    if (board[i][startCol].colour != ' ' ) return false;
                 }
             } else {
                 for (int i = startRow+1; i < endRow; i++){
-                    if (board[i][startCol].COLOUR != ' ' ) return false;
+                    if (board[i][startCol].colour != ' ' ) return false;
                 }
             }
             return true;

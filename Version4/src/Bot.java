@@ -2,31 +2,30 @@ package Version4.src;
 
 import java.util.Stack;
 
-public class Bot {
-    private static final int MAX_DEPTH = 3;
+class Bot {
 
-    public static void makeMove(Piece[][] board, char botColor) {
+    static void makeMove(Piece[][] board, char botColor) {
         int bestScore = botColor == 'W' ? Integer.MIN_VALUE : Integer.MAX_VALUE;
         int bestStartRow = -1, bestStartCol = -1, bestEndRow = -1, bestEndCol = -1;
 
-        for (int startRow = 0; startRow < 8; startRow++) {
-            for (int startCol = 0; startCol < 8; startCol++) {
-                if (board[startRow][startCol].COLOUR == botColor) {
-                    for (int endRow = 0; endRow < 8; endRow++) {
-                        for (int endCol = 0; endCol < 8; endCol++) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (board[i][j].colour == botColor) {
+                    for (int k = 0; k < 8; k++) {
+                        for (int l = 0; l < 8; l++) {
                             Piece[][] tempBoard = Functions.makeBoardCopy(board);
                             Stack<Piece[][]> tempHistory = new Stack<>();
                             tempHistory.push(Functions.makeBoardCopy(tempBoard));
 
-                            if (Functions.makeMove(tempBoard, startRow, startCol, endRow, endCol, botColor, tempHistory)) {
-                                int score = minimax(tempBoard, MAX_DEPTH - 1, botColor == 'W' ? 'B' : 'W', Integer.MIN_VALUE, Integer.MAX_VALUE);
+                            if (Functions.makeMove(tempBoard, i, j, k, l, botColor, tempHistory)) {
+                                int score = minimax(tempBoard, Main.MAX_DEPTH - 1, botColor == 'W' ? 'B' : 'W', Integer.MIN_VALUE, Integer.MAX_VALUE);
 
                                 if ((botColor == 'W' && score > bestScore) || (botColor == 'B' && score < bestScore)) {
                                     bestScore = score;
-                                    bestStartRow = startRow;
-                                    bestStartCol = startCol;
-                                    bestEndRow = endRow;
-                                    bestEndCol = endCol;
+                                    bestStartRow = i;
+                                    bestStartCol = j;
+                                    bestEndRow = k;
+                                    bestEndCol = l;
                                 }
                             }
                         }
@@ -47,16 +46,16 @@ public class Bot {
 
         int bestScore = currentPlayer == 'W' ? Integer.MIN_VALUE : Integer.MAX_VALUE;
 
-        for (int startRow = 0; startRow < 8; startRow++) {
-            for (int startCol = 0; startCol < 8; startCol++) {
-                if (board[startRow][startCol].COLOUR == currentPlayer) {
-                    for (int endRow = 0; endRow < 8; endRow++) {
-                        for (int endCol = 0; endCol < 8; endCol++) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (board[i][j].colour == currentPlayer) {
+                    for (int k = 0; k < 8; k++) {
+                        for (int l = 0; l < 8; l++) {
                             Piece[][] tempBoard = Functions.makeBoardCopy(board);
                             Stack<Piece[][]> tempHistory = new Stack<>();
                             tempHistory.push(Functions.makeBoardCopy(tempBoard));
 
-                            if (Functions.makeMove(tempBoard, startRow, startCol, endRow, endCol, currentPlayer, tempHistory)) {
+                            if (Functions.makeMove(tempBoard, i, j, k, l, currentPlayer, tempHistory)) {
                                 int score = minimax(tempBoard, depth - 1, currentPlayer == 'W' ? 'B' : 'W', alpha, beta);
 
                                 if (currentPlayer == 'W') {

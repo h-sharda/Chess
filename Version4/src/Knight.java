@@ -2,12 +2,12 @@ package Version4.src;
 
 class Knight extends Piece{
 
-    Knight(char name, int points, char colour) {
-        super(name, points, colour);
+    Knight(char name, int value, char colour) {
+        super(name, value, colour);
     }
 
     @Override
-    public boolean moveTo(Piece[][] board, int startRow, int startCol, int endRow, int endCol) {
+    boolean moveTo(Piece[][] board, int startRow, int startCol, int endRow, int endCol) {
 
         if ( startRow == endRow && startCol == endCol) return false;
 

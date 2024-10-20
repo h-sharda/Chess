@@ -1,13 +1,13 @@
 package Version4.src;
 
-public class Empty extends Piece {
+class Empty extends Piece {
 
-    Empty(char name, int points, char colour) {
-        super(name, points, colour);
+    Empty(char name, int value, char colour) {
+        super(name, value, colour);
     }
 
     @Override
-    public boolean moveTo(Piece[][] board, int startRow, int startCol, int endRow, int endCol) {
+    boolean moveTo(Piece[][] board, int startRow, int startCol, int endRow, int endCol) {
         return false;
     }
 }

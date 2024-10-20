@@ -1,18 +1,21 @@
+package Version4.src;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
-public class Trial extends JFrame {
+class Trial extends JFrame {
     List<String> fontNames;
     int currentPage = 0;
     int fontsPerPage = 10;
     JPanel fontPanel;
     JLabel pageLabel;
 
-    public Trial() {
+    Trial() {
         setTitle("Font Display");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);

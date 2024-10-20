@@ -2,26 +2,27 @@ package Version4.src;
 
 import java.util.Stack;
 
-public class EndConditions {
-
-    public static int FIFTY_MOVE = 0;
-    public static boolean fiftyMoveDraw(){
-        return FIFTY_MOVE > 50;
-    }
-
-    // CHECKMATE IF NO LEGAL MOVES AND KING IS UNDER THREAT
+class EndConditions {
 
     private static int moves;
     private static boolean isKingUnsafe;
 
-    public static boolean checkMate(Piece[][] board, char player, Stack<Piece[][]> st) {
-        moves = Functions.totalLegalMoves(board, player, st);
-        isKingUnsafe = Functions.isKingUnsafe(board, player);
+    // CHECKMATE IF NO LEGAL MOVES AND KING IS UNDER THREAT
+    static boolean checkMate(Piece[][] board, char currentPlayer, Stack<Piece[][]> st) {
+        moves = Functions.totalLegalMoves(board, currentPlayer, st);
+        isKingUnsafe = Functions.isKingUnsafe(board, currentPlayer);
         return (moves == 0 && isKingUnsafe);
     }
 
     // STALEMATE IF NO LEGAL MOVES AND KING ISN'T UNDER THREAT
-    public static boolean staleMate() {
+    static boolean staleMate() {
         return (moves == 0 && !isKingUnsafe);
     }
+
+    /* To add
+    1) Draw by insufficient material
+    2) 3 peat repetition
+    3) 50 Move Rule
+    4) Resignation
+     */
 }
