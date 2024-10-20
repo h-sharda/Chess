@@ -61,6 +61,8 @@ This is a customizable **Chess Simulator** built in Java using Swing. Play with 
     - **Version 4**: Introduced single-player mode with a bot using the **Minimax algorithm** and a **chess opening book** for enhanced gameplay.
     - **Version 5** *(under development)*: Improving the bot using **reinforcement learning** to make it even more challenging.
 
+###### *(Please read the individual README files for the specific version for further details)*
+
 ---
 
 ### 📝 License
