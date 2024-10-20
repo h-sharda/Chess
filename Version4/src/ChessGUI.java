@@ -10,8 +10,8 @@ public class ChessGUI {
 
     // BOARD INITIALIZATION
     static final int BOARD_SIZE = 8;
-    public static Piece[][] actualBoard = new Piece[BOARD_SIZE][BOARD_SIZE];
-    public static Stack<Piece[][]> boardHistory = new Stack<>();
+    static Piece[][] actualBoard = new Piece[BOARD_SIZE][BOARD_SIZE];
+    static Stack<Piece[][]> boardHistory = new Stack<>();
 
 
     // VARIABLES USED FOR MAKING MOVES
@@ -127,16 +127,16 @@ public class ChessGUI {
 
                 Piece A = actualBoard[i][j];
 
-                if (A.COLOUR == 'W') displayBoard[i][j].setForeground(Main.LIGHT_PIECE);
-                else if (A.COLOUR == 'B') displayBoard[i][j].setForeground(Main.DARK_PIECE);
-                else if (A.COLOUR == ' ') displayBoard[i][j].setForeground(Main.MOVABLE_SQUARE);
+                if (A.colour == 'W') displayBoard[i][j].setForeground(Main.LIGHT_PIECE);
+                else if (A.colour == 'B') displayBoard[i][j].setForeground(Main.DARK_PIECE);
+                else if (A.colour == ' ') displayBoard[i][j].setForeground(Main.MOVABLE_SQUARE);
 
                 if ((i + j) % 2 == 1) displayBoard[i][j].setBackground(Main.LIGHT_SQUARE);
                 else displayBoard[i][j].setBackground(Main.DARK_SQUARE);
 
-                if (A.NAME == 'K' && A.COLOUR == currentPlayer) {
-                    if (currentPlayer == 'W' && !A.IS_SAFE_FOR_WHITE) displayBoard[i][j].setBackground(Main.KING_UNDER_THREAT);
-                    else if (currentPlayer == 'B' && !A.IS_SAFE_FOR_BLACK) displayBoard[i][j].setBackground(Main.KING_UNDER_THREAT);
+                if (A.name == 'K' && A.colour == currentPlayer) {
+                    if (currentPlayer == 'W' && !A.isSafeForWhite) displayBoard[i][j].setBackground(Main.KING_UNDER_THREAT);
+                    else if (currentPlayer == 'B' && !A.isSafeForBlack) displayBoard[i][j].setBackground(Main.KING_UNDER_THREAT);
                 }
                 displayBoard[i][j].setText(actualBoard[i][j].getName());
 
@@ -154,9 +154,9 @@ public class ChessGUI {
                 boolean moved = Functions.makeMove(actualBoard, startRow, startCol,i,j, currentPlayer, boardHistory);
                 if (moved){
                     Functions.undo(actualBoard, boardHistory);
-                    if (actualBoard[i][j].COLOUR == ' ') {
+                    if (actualBoard[i][j].colour == ' ') {
                         displayBoard[i][j].setText("○");
-                    } else if (actualBoard[i][j].COLOUR == comp){
+                    } else if (actualBoard[i][j].colour == comp){
                         displayBoard[i][j].setBackground(Main.CAPTURABLE_SQUARE);
                     }
                 }
@@ -171,7 +171,7 @@ public class ChessGUI {
         startRow = row;
         startCol = col;
 
-        if(actualBoard[startRow][startCol].COLOUR == currentPlayer) displayPossibleMoves();
+        if(actualBoard[startRow][startCol].colour == currentPlayer) displayPossibleMoves();
 
         clickSelector = false;
     }
