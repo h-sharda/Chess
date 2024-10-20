@@ -5,8 +5,9 @@ This is the 4th version adding a Bot to the game and improving on UI
 
 ### Updates
 - Added a Simple bot based on minimax and Alpha-beta pruning
+- Bots can also play against each other
 - Improved the UI throughout the game
-- When playing with a bot make sure you give yourself enough time as bot will make moves very fast
-- Currently, you can't play 2 bots against each other 
+- Previous Move is highlighted now
+- Timer is made better and smoother
 
 ###### *Currently, the bot doesn't follow any Opening book, it just uses Minimax anf Alpha-Beta pruning to make moves. An opening book will be added soon*
