@@ -28,7 +28,7 @@ public class Main {
 
     static final String CLOCK_EMOJI = "\uD83D\uDD53";
     static final int MAX_DEPTH = 3;
-    static final int BOT_THINKING_START_DELAY = 20;
+    static final int BOT_THINKING_START_DELAY = 100;
 
     // GAME FEATURES
     static int time = 600;
