@@ -221,6 +221,7 @@ class ChessGUI {
 
             if (currentPlayer == 'W' ) player1Time += Main.timeIncrement;
             else player2Time += Main.timeIncrement;
+            evaluation = Functions.calculateEvaluation(actualBoard);
             currentPlayer = currentPlayer == 'W' ? 'B' : 'W';
             flipBoard();
             updateDisplayBoard();
