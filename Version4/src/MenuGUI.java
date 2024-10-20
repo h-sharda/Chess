@@ -185,8 +185,6 @@ class MenuGUI {
     // HANDLES THE START BUTTON, IF ALL THE INPUTS ARE VALID IT SWITCHES TO GAME_FRAME
     static void handleStart(){
         try {
-            if(Main.player2Type == 'C' && Main.player1Type == 'C') throw new IllegalArgumentException("Both players cant be bots");
-
             String player1Name = txtInputPlayer1Name.getText();
             if (player1Name.length() > 20 ) throw new IllegalArgumentException("Player 1 Name too long, name <= 20");
 
@@ -207,7 +205,6 @@ class MenuGUI {
 
             menuFrame.setVisible(false);
             ChessGUI.main(new String[] {""});
-
         } catch (NumberFormatException e){
             String exceptionMessage = "Time and Time Increment must be integer values";
             lblThrowableDialog.setText(exceptionMessage);

@@ -36,6 +36,10 @@ class Bot {
 
         if (bestStartRow != -1 && bestStartCol != -1 && bestEndRow != -1 && bestEndCol != -1) {
             Functions.makeMove(board, bestStartRow, bestStartCol, bestEndRow, bestEndCol, botColor, ChessGUI.boardHistory);
+            ChessGUI.startRow = bestStartRow;
+            ChessGUI.startCol = bestStartCol;
+            ChessGUI.endRow = bestEndRow;
+            ChessGUI.endCol = bestEndCol;
         }
     }
 

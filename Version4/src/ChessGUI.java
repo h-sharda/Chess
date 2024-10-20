@@ -4,13 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Stack;
 
-public class ChessGUI {
-
-    static final String CLOCK_EMOJI = "\uD83D\uDD53 ";
+class ChessGUI {
 
     // BOARD INITIALIZATION
     static final int BOARD_SIZE = 8;
-    static Piece[][] actualBoard = new Piece[BOARD_SIZE][BOARD_SIZE];
+    static Piece[][] actualBoard = new Piece[8][8];
     static Stack<Piece[][]> boardHistory = new Stack<>();
 
 
@@ -22,29 +20,28 @@ public class ChessGUI {
     static boolean boardFlip = Main.boardFlip;
     static boolean isMoveReal = false;
     static boolean clickSelector = true; // true for first click, false for second click
-
+    static boolean gameEnd = false;
 
     // GAME GUI COMPONENTS
-    public static JFrame gameFrame =  new JFrame("CHESS");
+    static JFrame gameFrame =  new JFrame("CHESS");
+    static Timer gameTimer = new Timer(1000, e -> handleTime());
 
-    public static JPanel boardPanel = new JPanel( new GridLayout(BOARD_SIZE, BOARD_SIZE));
-    public static JButton[][] displayBoard = new JButton[BOARD_SIZE][BOARD_SIZE];
+    static JPanel boardPanel = new JPanel( new GridLayout(BOARD_SIZE, BOARD_SIZE));
+    static JButton[][] displayBoard = new JButton[BOARD_SIZE][BOARD_SIZE];
 
-    public static JPanel controlPanel = new JPanel(new FlowLayout());
-    public static JButton btnUndo = new JButton("UNDO");
-    public static JButton btnReset = new JButton("RESET");
-    public static JCheckBox chkFlipBoard = new JCheckBox("FLIP");
-    public static JButton lblEvaluation = new JButton( ""+ 0);
+    static JPanel controlPanel = new JPanel(new FlowLayout());
+    static JButton btnUndo = new JButton("UNDO");
+    static JButton btnReset = new JButton("RESET");
+    static JCheckBox chkFlipBoard = new JCheckBox("FLIP");
+    static JButton lblEvaluation = new JButton( ""+ 0);
 
-    public static JPanel player1Panel = new JPanel(new BorderLayout());
-    public static JLabel lblPlayer1Name = new JLabel(Main.player1Name);
-    public static JLabel lblPlayer1Time = new JLabel(CLOCK_EMOJI + player1Time /60 +":" + String.format("%02d", player1Time % 60));
-    public static Timer player1Timer = new Timer(1000, e-> handleTime());
+    static JPanel player1Panel = new JPanel(new BorderLayout());
+    static JLabel lblPlayer1Name = new JLabel(Main.player1Name);
+    static JLabel lblPlayer1Time = new JLabel(Main.CLOCK_EMOJI + player1Time/60 + ":" + String.format("%02d", player1Time % 60));
 
-    public static JPanel player2Panel = new JPanel(new BorderLayout());
-    public static JLabel lblPlayer2Name = new JLabel(Main.player2Name);
-    public static JLabel lblPlayer2Time = new JLabel(CLOCK_EMOJI + player2Time /60 +":" + String.format("%02d", player2Time % 60));
-    public static Timer player2Timer = new Timer(1000, e-> handleTime());
+    static JPanel player2Panel = new JPanel(new BorderLayout());
+    static JLabel lblPlayer2Name = new JLabel(Main.player2Name);
+    static JLabel lblPlayer2Time = new JLabel(Main.CLOCK_EMOJI + player2Time/60 + ":" + String.format("%02d", player2Time % 60));
 
 
     // MAIN RUNNER PROGRAM OF THE GAME
@@ -68,7 +65,7 @@ public class ChessGUI {
             }
         }
 
-        handleTime();
+        gameTimer.start();
         updateDisplayBoard();
 
         gameFrame.setLayout(new BorderLayout());
@@ -115,13 +112,17 @@ public class ChessGUI {
         gameFrame.setLocationRelativeTo(null);
         gameFrame.setVisible(true);
 
-        if (currentPlayer == 'W'){
-            if (Main.player1Type == 'C') makeBotMove();
+        if (currentPlayer == 'W' && Main.player1Type == 'C'){
+            SwingUtilities.invokeLater(() -> {
+                Timer timer = new Timer(Main.BOT_THINKING_START_DELAY, e -> makeBotMove());
+                timer.setRepeats(false);
+                timer.start();
+            });
         }
     }
 
 
-    public static void updateDisplayBoard() {
+    static void updateDisplayBoard() {
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
 
@@ -146,17 +147,17 @@ public class ChessGUI {
     }
 
 
-    public static void displayPossibleMoves(){
+    static void displayPossibleMoves(){
         displayBoard[startRow][startCol].setBackground(Main.SELECTED_SQUARE);
-        char comp = currentPlayer =='W'? 'B': 'W';
+        char opponent = currentPlayer =='W'? 'B': 'W';
         for (int i=0; i< BOARD_SIZE; i++){
             for (int j = 0; j< BOARD_SIZE; j++){
-                boolean moved = Functions.makeMove(actualBoard, startRow, startCol,i,j, currentPlayer, boardHistory);
-                if (moved){
+                boolean moveable = Functions.makeMove(actualBoard, startRow, startCol,i,j, currentPlayer, boardHistory);
+                if (moveable){
                     Functions.undo(actualBoard, boardHistory);
                     if (actualBoard[i][j].colour == ' ') {
                         displayBoard[i][j].setText("○");
-                    } else if (actualBoard[i][j].colour == comp){
+                    } else if (actualBoard[i][j].colour == opponent){
                         displayBoard[i][j].setBackground(Main.CAPTURABLE_SQUARE);
                     }
                 }
@@ -165,21 +166,16 @@ public class ChessGUI {
     }
 
 
-    public static void handleFirstClick(int row, int col){
+    static void handleFirstClick(int row, int col){
         if (!clickSelector) return;
-
+        updateDisplayBoard();
         startRow = row;
         startCol = col;
-
         if(actualBoard[startRow][startCol].colour == currentPlayer) displayPossibleMoves();
-
         clickSelector = false;
     }
-
-
-    public static void handleSecondClick(int row, int col){
+    static void handleSecondClick(int row, int col){
         if (clickSelector) return;
-
         endRow = row;
         endCol = col;
 
@@ -187,59 +183,95 @@ public class ChessGUI {
         boolean moved = Functions.makeMove(actualBoard, startRow, startCol, endRow, endCol, currentPlayer, boardHistory);
         isMoveReal = false;
 
-        evaluation = Functions.calculateEvaluation(actualBoard);
-        updateDisplayBoard();
-
         clickSelector = true;
-
         if (moved) {
             if (currentPlayer == 'W' ) player1Time += Main.timeIncrement;
             else player2Time += Main.timeIncrement;
-
+            evaluation = Functions.calculateEvaluation(actualBoard);
             currentPlayer = currentPlayer == 'W' ? 'B' : 'W';
             flipBoard();
             updateDisplayBoard();
-
-            if (Pawn.pawnPromotionFlag) handlePromotion();
+            displayBoard[startRow][startCol].setBackground(Main.SQUARE_STARTED_FROM);
+            displayBoard[endRow][endCol].setBackground(Main.SQUARE_MOVED_TO);
 
             if (EndConditions.checkMate(actualBoard, currentPlayer, boardHistory)){
                 String winner = currentPlayer =='W' ? "BLACK" : "WHITE";
-                JOptionPane.showMessageDialog(gameFrame, winner +" WON THE GAME");
+                JOptionPane.showMessageDialog(gameFrame, winner +" WON THE GAME BY CHECKMATE");
+                gameEnd = true;
             } else if (EndConditions.staleMate()){
                 JOptionPane.showMessageDialog(gameFrame, "GAME IS DRAW BY STALEMATE");
+                gameEnd = true;
             }
 
-            if (currentPlayer == 'W'){
-                if (Main.player1Type == 'C') makeBotMove();
-            } else {
-                if (Main.player2Type == 'C') makeBotMove();
+            if ((currentPlayer == 'W' && Main.player1Type == 'C') || (currentPlayer == 'B' && Main.player2Type == 'C')) {
+                SwingUtilities.invokeLater(() -> {
+                    Timer timer = new Timer(Main.BOT_THINKING_START_DELAY, e -> makeBotMove());
+                    timer.setRepeats(false);
+                    timer.start();
+                });
             }
-
         } else {
             handleFirstClick(row, col);
         }
     }
+    static void makeBotMove(){
+        if (gameEnd) return;
+        new Thread(() -> {
+            Bot.makeMove(actualBoard, currentPlayer);
 
-    public static void makeBotMove(){
-        Bot.makeMove(actualBoard, currentPlayer);
+            if (currentPlayer == 'W' ) player1Time += Main.timeIncrement;
+            else player2Time += Main.timeIncrement;
+            currentPlayer = currentPlayer == 'W' ? 'B' : 'W';
+            flipBoard();
+            updateDisplayBoard();
+            displayBoard[startRow][startCol].setBackground(Main.SQUARE_STARTED_FROM);
+            displayBoard[endRow][endCol].setBackground(Main.SQUARE_MOVED_TO);
 
-        if (currentPlayer == 'W' ) player1Time += Main.timeIncrement;
-        else player2Time += Main.timeIncrement;
-
-        currentPlayer = currentPlayer == 'W' ? 'B' : 'W';
-        flipBoard();
-        updateDisplayBoard();
-
-        if (EndConditions.checkMate(actualBoard, currentPlayer, boardHistory)){
-            String winner = currentPlayer =='W' ? "BLACK" : "WHITE";
-            JOptionPane.showMessageDialog(gameFrame, winner +" WON THE GAME");
-        } else if (EndConditions.staleMate()){
-            JOptionPane.showMessageDialog(gameFrame, "GAME IS DRAW BY STALEMATE");
-        }
-
+            if (EndConditions.checkMate(actualBoard, currentPlayer, boardHistory)) {
+                String winner = currentPlayer == 'W' ? "BLACK" : "WHITE";
+                JOptionPane.showMessageDialog(gameFrame, winner + " WON THE GAME BY CHECKMATE");
+                gameEnd = true;
+            } else if (EndConditions.staleMate()) {
+                JOptionPane.showMessageDialog(gameFrame, "GAME IS DRAW BY STALEMATE");
+                gameEnd = true;
+            }
+            if ((currentPlayer == 'W' && Main.player1Type == 'C') || (currentPlayer == 'B' && Main.player2Type == 'C')) {
+                SwingUtilities.invokeLater(() -> {
+                    Timer timer = new Timer(Main.BOT_THINKING_START_DELAY, e -> makeBotMove());
+                    timer.setRepeats(false);
+                    timer.start();
+                });
+            }
+        }).start();
     }
 
-    public static void handleUndo(){
+
+    static void handleTime (){
+        if (gameEnd) {
+            gameTimer.stop();
+            return;
+        }
+
+        if (currentPlayer == 'W') {
+            player1Time--;
+            if (player1Time <= 0) {
+                gameEnd = true;
+                JOptionPane.showMessageDialog(gameFrame, "BLACK WON BY TIMEOUT");
+            }
+        } else {
+            player2Time--;
+            if (player2Time <= 0) {
+                gameEnd = true;
+                JOptionPane.showMessageDialog(gameFrame, "WHITE WON BY TIMEOUT");
+            }
+        }
+
+        lblPlayer1Time.setText( Main.CLOCK_EMOJI + player1Time/60 + ":" + String.format("%02d", player1Time % 60));
+        lblPlayer2Time.setText( Main.CLOCK_EMOJI + player2Time/60 + ":" + String.format("%02d", player2Time % 60));
+    }
+
+
+    static void handleUndo(){
         if (boardHistory.size() <= 1) return;
         Functions.undo(actualBoard, boardHistory);
         currentPlayer = currentPlayer =='W'?'B':'W';
@@ -260,64 +292,44 @@ public class ChessGUI {
     }
 
 
-    public static void handleReset(){
+    static void handleReset(){
         Functions.reset(actualBoard, boardHistory);
         currentPlayer = 'W';
+        gameEnd = false;
         clickSelector = true;
         evaluation = 0;
         player1Time = Main.time;
         player2Time = Main.time;
+        gameTimer.start();
         flipBoard();
         updateDisplayBoard();
-        if(Main.player1Type == 'C'){
-            makeBotMove();
+        if (currentPlayer == 'W' && Main.player1Type == 'C'){
+            SwingUtilities.invokeLater(() -> {
+                Timer timer = new Timer(Main.BOT_THINKING_START_DELAY, e -> makeBotMove());
+                timer.setRepeats(false);
+                timer.start();
+            });
         }
     }
 
 
-    public static int handlePromotion() {
+    static int handlePromotion() {
         String[] options = {"Queen", "Knight", "Rook", "Bishop"};
 
         return JOptionPane.showOptionDialog(
                 gameFrame,
-            "Choose a piece for promotion:",
-            "Pawn Promotion",
-            JOptionPane.DEFAULT_OPTION,
-            JOptionPane.PLAIN_MESSAGE,
-            null,
-            options,
-            options[0]
+                "Choose a piece for promotion:",
+                "Pawn Promotion",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                options,
+                options[0]
         );
     }
 
 
-    public static void handleTime(){
-
-        lblPlayer1Time.setText(CLOCK_EMOJI + player1Time /60 +":" + String.format("%02d", player1Time % 60));
-        lblPlayer2Time.setText(CLOCK_EMOJI + player2Time /60 +":" + String.format("%02d", player2Time % 60));
-
-        if (currentPlayer == 'W'){
-            player2Timer.stop();
-            player1Timer.start();
-            player1Time--;
-            if (player1Time <= 0) {
-                player2Timer.stop();
-                String winner = currentPlayer =='W'?"BLACK":"WHITE";
-                JOptionPane.showMessageDialog(gameFrame, winner + " WON BY TIMEOUT");
-            }
-        } else if (currentPlayer == 'B'){
-            player1Timer.stop();
-            player2Timer.start();
-            player2Time--;
-            if (player2Time <= 0) {
-                player2Timer.stop();
-                String winner = currentPlayer =='W'?"BLACK":"WHITE";
-                JOptionPane.showMessageDialog(gameFrame, winner + " WON BY TIMEOUT");
-            }
-        }
-    }
-
-    public static void flipBoard(){
+    static void flipBoard(){
 
         if (!boardFlip) return;
 
