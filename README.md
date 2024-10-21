@@ -15,8 +15,8 @@ This is a customizable **Chess Simulator** built in Java using Swing. Play with 
 
 ### ✨ Features
 
-- **Chess Bot with Advanced AI Strategy**
-    - The game features a challenging AI bot powered by the **Minimax** algorithm with **Backtracking** for deeper analysis of possible moves.
+- **Chess Bot with Simple Strategy**
+    - The game features a Bot powered by the **Minimax** algorithm with **Backtracking** for deeper analysis of possible moves.
     - The bot leverages a **chess opening book** to enhance its early game strategy, making it more formidable as the game progresses.
 
 - **Comprehensive Game Mechanics**
