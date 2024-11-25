@@ -1,6 +1,6 @@
 # Chess
 
-This is a customizable **Chess Simulator** built in Java using Swing. Play with friends or challenge the Bot!
+This is a **Chess Simulator** built in Java using Swing. Play with friends or challenge the Bot!
 
 ---
 
